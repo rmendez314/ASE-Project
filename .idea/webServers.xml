@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="800998bd-a0ae-4bbe-858a-c1e0d201cafb" name="ASE-Server" url="http://ec2-54-146-181-156.compute-1.amazonaws.com">
+        <fileTransfer rootFolder="/var/www/html" accessType="SFTP" host="ec2-54-146-181-156.compute-1.amazonaws.com" port="22" sshConfigId="75825343-518b-4f43-90a0-8c95887c8695" sshConfig="ubuntu@ec2-54-146-181-156.compute-1.amazonaws.com:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
