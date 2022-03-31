@@ -10,7 +10,10 @@ if (!$con) {
     echo "<p class='success'>Connected to the database successfully.</p>";
 }
 // load devices.csv into the 'devices' table in the database
-$sql = "LOAD DATA LOCAL INFILE 'devices.csv' INTO TABLE devices FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\n')";
+$sql = "LOAD DATA LOCAL INFILE '/data/devices.csv' INTO TABLE devices FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\n' IGNORE 1 LINES (auto_id)";
+
+
+
 $result = mysqli_query($con, $sql);
 
 
