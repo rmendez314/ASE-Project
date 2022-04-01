@@ -9,45 +9,50 @@
     }
     // check if post array is empty
     if (!empty($_POST)) {
-        // check the post array if devices is set
-        if (isset($_POST['devices'])) {
-            // store the value of the devices array in a $device_type variable
-            $device_id = $_POST['devices'];
-            $sql = "SELECT * FROM devices WHERE auto_id LIKE '$device_id'";
+        $device_id = $_POST['devices'];
+        $manuf_id = $_POST['manufacturers'];
+        echo "Device Selected: " . $device_id . "<br>";
+        echo "Manufacturer Selected: " . $manuf_id . "<br>";
+        if (isset($_POST['devices']) && $_POST['manufacturers'] == "") {
+            $sql = "SELECT * FROM products WHERE device_id LIKE '$device_id' LIMIT 10000";
             $result = mysqli_query($con, $sql);
             // check if there are any results
             if (mysqli_num_rows($result) > 0) {
                 // output data of each row
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo "Device Selected: " . $row["device_type"] . "<br>";
+                    echo "Product Selected: " . $row["SN"] . "<br>";
                 }
+            } else {
+                echo "0 results";
             }
+        } elseif ($_POST['devices'] == "" && (isset($_POST['manufacturers']))) {
+            $sql = "SELECT * FROM products WHERE manufacturer_id LIKE '$manuf_id' LIMIT 10000";
+            $result = mysqli_query($con, $sql);
+            // check if there are any results
+            if (mysqli_num_rows($result) > 0) {
+                // output data of each row
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "Product Selected: " . $row["SN"] . "<br>";
+                }
+            } else {
+                echo "0 results";
+            }
+
         } else {
-            echo "Post is not set\n";
-        }
-        $manuf_id = $_POST['manufacturers'];
-        $sql = "SELECT * FROM manufacturers WHERE auto_id LIKE '$manuf_id'";
-        $result = mysqli_query($con, $sql);
-        // check if there are any results
-        if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "Manufacturer Selected: " . $row["manufacturer"] . "<br>";
+            $sql = "SELECT * FROM products WHERE manufacturer_id = '$manuf_id' AND device_id = '$device_id' LIMIT 10000";
+            $result = mysqli_query($con, $sql);
+            // check if there are any results
+            if (mysqli_num_rows($result) > 0) {
+                // output data of each row
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "Product Selected: " . $row["SN"] . "<br>";
+                }
+            } else {
+                echo "0 results";
             }
         }
-        $sql = "SELECT * FROM products WHERE manufacturer_id LIKE '$manuf_id' AND device_id LIKE '$device_id' LIMIT 100";
-        $result = mysqli_query($con, $sql);
-        // check if there are any results
-        if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "Product Selected: " . $row["SN"] . "<br>";
-            }
-        } else {
-            echo "0 results";
-        }
-    } else {
-        echo "Post is not set\n";
     }
+    // close the connection
+    mysqli_close($con);
     ?>
 </div>

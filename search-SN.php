@@ -16,10 +16,12 @@
         $result = mysqli_query($con, $sql);
         if (mysqli_num_rows($result) > 0) {
             while($row = mysqli_fetch_assoc($result)) {
-                echo "Device Type"  . "        " . "Manufacturer" . "          " . "Serial Number <br>";
-                echo $row["device_type"] . " " . $row["manufacturer"] . " " . $row["SN"] . "<br>";
+
+                echo  "Manufacturer: " . $row["manufacturer"] . "<br>Device: " . $row['device_type'] . "<br>SN: " . $row["SN"] . "<br>";
             }
         } else {
             echo "0 results";
         }
     }
+    // close the connection
+    mysqli_close($con);
