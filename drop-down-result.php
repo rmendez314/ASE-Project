@@ -1,6 +1,9 @@
+<link rel='stylesheet' type='text/css' href='styles/index.css' />
 <div id="back_button" class="back_button">
-    <h2><a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php">back</a></h2>
+<!--    <h2><a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php">back</a></h2>-->
+    <button> <a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php"> Back </a></button>
 </div>
+
 <div id="drop-down-result">
     <?php
     require_once ".env.php";
@@ -17,7 +20,7 @@
         echo "Device Selected: " . $device_id . "<br>";
         echo "Manufacturer Selected: " . $manuf_id . "<br>";
         if (isset($_POST['devices']) && $_POST['manufacturers'] == "") {
-            $sql = "SELECT * FROM products WHERE device_id LIKE '$device_id' LIMIT 10000";
+            $sql = "SELECT * FROM products WHERE device_id LIKE '$device_id'";
             $result = mysqli_query($con, $sql);
             // check if there are any results
             if (mysqli_num_rows($result) > 0) {
@@ -29,7 +32,7 @@
                 echo "0 results";
             }
         } elseif ($_POST['devices'] == "" && (isset($_POST['manufacturers']))) {
-            $sql = "SELECT * FROM products WHERE manufacturer_id LIKE '$manuf_id' LIMIT 10000";
+            $sql = "SELECT * FROM products WHERE manufacturer_id LIKE '$manuf_id'";
             $result = mysqli_query($con, $sql);
             // check if there are any results
             if (mysqli_num_rows($result) > 0) {
@@ -42,7 +45,7 @@
             }
 
         } else {
-            $sql = "SELECT * FROM products WHERE manufacturer_id = '$manuf_id' AND device_id = '$device_id' LIMIT 10000";
+            $sql = "SELECT * FROM products WHERE manufacturer_id = '$manuf_id' AND device_id = '$device_id'";
             $result = mysqli_query($con, $sql);
             // check if there are any results
             if (mysqli_num_rows($result) > 0) {

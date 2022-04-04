@@ -1,6 +1,9 @@
-<div id="back_button">
-    <h2><a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php">back</a></h2>
+<link rel='stylesheet' type='text/css' href='styles/index.css' />
+<div id="back_button" class="back_button">
+    <!--    <h2><a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php">back</a></h2>-->
+    <button> <a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php"> Back </a></button>
 </div>
+<div>
 <?php
     require_once ".env.php";
     // connect to the database
@@ -23,4 +26,4 @@
     // close the connection
     mysqli_close($con);
     ?>
-
+</div>
