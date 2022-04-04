@@ -1,3 +1,6 @@
+<div id="back_button">
+    <h2><a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php">back</a></h2>
+</div>
 <div id="drop-down-result">
     <?php
     require_once ".env.php";

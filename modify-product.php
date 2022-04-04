@@ -1,32 +1,41 @@
+<div id="back_button">
+    <h2><a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php">back</a></h2>
+</div>
 <?php
     require_once ".env.php";
+    // set the serial number cookie
+    if (isset($_POST['serial_number'])) {
+        setcookie("serial_number", $_POST['serial_number'], time() + (86400 * 2), "/");
+    }
     // connect to the database
     $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
     // check connection
     if (!$con) {
         die("Connection failed: " . mysqli_connect_error());
     }
-    // get the search term from the user
+    $serial_number = $_POST['serial_number'];
     if (isset($_POST['serial_number'])){
         $serial_number = $_POST['serial_number'];
         $sql = "SELECT devices.device_type, manufacturers.manufacturer, SN FROM products 
                     INNER JOIN devices ON products.device_id = devices.auto_id 
-                    INNER JOin manufacturers ON products.manufacturer_id = manufacturers.auto_id 
+                    INNER JOIN manufacturers ON products.manufacturer_id = manufacturers.auto_id 
                     WHERE SN = '$serial_number'";
         $result = mysqli_query($con, $sql);
         if (mysqli_num_rows($result) > 0) {
             while($row = mysqli_fetch_assoc($result)) {
                 echo "Product Selected: <br>";
                 echo  "Manufacturer: " . $row["manufacturer"] . "<br>Device: " . $row['device_type'] . "<br>SN: " . $row["SN"] . "<br>";
+                setcookie("og_device", $row['device_type'], time() + (86400 * 2), "/");
+                setcookie("og_manufacturer", $row['manufacturer'], time() + (86400 * 2), "/");
             }
         } else {
             echo "0 results";
         }
     }
     ?>
-    <form id="drop-down" method="post">
-        <label for="devices">Choose a Device:</label>
-        <select id="devices" name="devices">
+    <form id="drop-down" method="get" action="modify-product.php">
+        <label for="device_id">Choose a Device:</label>
+        <select id="device_id" name="device_id">
             <option value="">Select a Device</option>
             <?php
             # select all devices
@@ -37,8 +46,8 @@
             }
             ?>
         </select>
-        <label for="manufacturers">Choose a Manufacturer:</label>
-        <select id="manufacturers" name="manufacturers">
+        <label for="manufacturer_id">Choose a Manufacturer:</label>
+        <select id="manufacturer_id" name="manufacturer_id">
             <option value="">Select a Manufacturer</option>
             <?php
             # select all devices
@@ -50,29 +59,55 @@
             ?>
         </select>
         <label for="radio">Is active:</label>
-        <input type="radio" name="radio" value="1">
+        <input id="radio" type="radio" name="radio" value="1">
         <input type="submit" id ="submit">
     </form>
     <?php
-    # updata the product with new manufacturer and device
-    if (isset($_POST['devices']) && isset($_POST['manufacturers'])) {
-        $device_id = $_POST['devices'];
-        $manufacturer_id = $_POST['manufacturers'];
-        $is_active = $_POST['radio'];
-        $serial_number = $_POST['serial_number'];
-        echo $device_id . " " . $manufacturer_id . " " . $is_active . " " . $serial_number;
-//        $sql = "UPDATE products
-//                SET
-//                    manufacturer_id = '$manufacturer_id',
-//                    device_id = '$device_id',
-//                    is_active = '$is_active'
-//                WHERE
-//                      SN = '$serial_number'";
-//        if (mysqli_query($con, $sql)) {
-//            echo "Record updated successfully";
-//        } else {
-//            echo "Error updating record: " . mysqli_error($con);
-//        }
+    if (isset($_COOKIE['serial_number'])) {
+        $serial_number = $_COOKIE['serial_number'];
+        # update the product with new manufacturer and device
+        if ($_GET['device_id'] != "" && $_GET['manufacturer_id'] != "") {
+            $device_id = $_GET['device_id'];
+            $manufacturer_id = $_GET['manufacturer_id'];
+            $is_active = $_GET['radio'];
+            $sql = "UPDATE products SET manufacturer_id = '$manufacturer_id', device_id = '$device_id' WHERE SN = '$serial_number'";
+            $result = mysqli_query($con, $sql);
+            if ($result) {
+                echo "Updated Product Info: <br>";
+                echo "Device: " . $device_id . "<br>";
+                echo "Manufacturer: " . $manufacturer_id . "<br>";
+                echo "Serial Number: " . $serial_number . "<br>";
+            } else {
+                echo "Error: " . $sql . "<br>" . mysqli_error($con);
+            }
+        } elseif ($_GET['device_id'] != ""  && $_GET['manufacturer_id'] == "") {
+            $device_id = $_GET['device_id'];
+            $is_active = $_GET['radio'];
+            $sql = "UPDATE products SET device_id = '$device_id' WHERE SN = '$serial_number'";
+            $result = mysqli_query($con, $sql);
+            if($result) {
+                echo "Updated Product Info: <br>";
+                echo "Device: " . $device_id . "<br>";
+                echo "Manufacturer: " . $_COOKIE['og_manufacturer'] . "<br>";
+                echo "Serial Number: " . $serial_number . "<br>";
+            } else {
+                echo "Error: " . $sql . "<br>" . mysqli_error($con);
+            }
+        } elseif ($_GET['device_id'] == "" && $_GET['manufacturer_id'] != "") {
+            $manufacturer_id = $_GET['manufacturer_id'];
+            $is_active = $_GET['radio'];
+            $sql = "UPDATE products SET manufacturer_id = '$manufacturer_id' WHERE SN = '$serial_number'";
+            $result = mysqli_query($con, $sql);
+            if( $result ) {
+                echo "Updated Product Info: <br>";
+                echo "Device: " . $_COOKIE['og_device'] . "<br>";
+                echo "Manufacturer: " . $manufacturer_id . "<br>";
+                echo "Serial Number: " . $serial_number . "<br>";
+            } else {
+                echo "Error updating record: " . mysqli_error($con);
+            }
+        }
     }
+    // close connection
     mysqli_close($con);
     ?>
