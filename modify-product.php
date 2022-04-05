@@ -23,10 +23,6 @@
     }
     $sql .= "WHERE SN = '$serial_number'";
     $result = mysqli_query($con, $sql);
-    // check if the query was successful
-    if (!$result) {
-        echo "<h2> Product Update Failed </h2>";
-    }
     // close connection
     mysqli_close($con);
     # redirect back to index.php

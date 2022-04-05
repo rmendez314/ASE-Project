@@ -6,8 +6,7 @@ include_once ".env.php";
 //    $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
 //    $sql = "SELECT * FROM products WHERE device_id LIKE '$device_id';";
 //    $result = mysqli_query($con, $sql);
-//    $row = $result->fetch_all(MYSQLI_ASSOC);
-//    return $row;
+//    return $result->fetch_all(MYSQLI_ASSOC);
 //}
 //# function to select products where manufacturer is like manufacturer_id
 //function select_manufacturer($manufacturer_id) {
@@ -15,8 +14,7 @@ include_once ".env.php";
 //    $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
 //    $sql = "SELECT * FROM products WHERE manufacturer_id LIKE '$manufacturer_id';";
 //    $result = mysqli_query($con, $sql);
-//    $row = $result->fetch_all(MYSQLI_ASSOC);
-//    return $row;
+//    return $result->fetch_all(MYSQLI_ASSOC);
 //}
 //# function to select products where manufacturer is like manufacturer_id and device is like device_id
 //function select_both($manufacturer_id, $device_id) {
@@ -25,8 +23,7 @@ include_once ".env.php";
 //    $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
 //    $sql = "SELECT * FROM products WHERE manufacturer_id = '$manufacturer_id' AND device_id = '$device_id';";
 //    $result = mysqli_query($con, $sql);
-//    $row = $result->fetch_all(MYSQLI_ASSOC);
-//    return $row;
+//    return $result->fetch_all(MYSQLI_ASSOC);
 //}
 //#function to echo products
 //function echo_products($products) {
@@ -62,53 +59,52 @@ if (!$con) {
 //} else {
 //    echo "Post is empty.";
 //}
-
-
-    // check if post array is empty
-    if (!empty($_POST)) {
-        $device_id = $_POST['devices'];
-        $manuf_id = $_POST['manufacturers'];
-        echo "Device Selected: " . $device_id . "<br>";
-        echo "Manufacturer Selected: " . $manuf_id . "<br>";
-        if (isset($_POST['devices']) && $_POST['manufacturers'] == "") {
-            $sql = "SELECT * FROM products WHERE device_id LIKE '$device_id'";
-            $result = mysqli_query($con, $sql);
-            // check if there are any results
-            if (mysqli_num_rows($result) > 0) {
-                // output data of each row
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "Product Selected: " . $row["SN"] . "<br>";
-                }
-            } else {
-                echo "0 results";
+// check if post array is empty
+if (!empty($_POST)) {
+    $device_id = $_POST['devices'];
+    $manuf_id = $_POST['manufacturers'];
+    echo "Device Selected: " . $device_id . "<br>";
+    echo "Manufacturer Selected: " . $manuf_id . "<br>";
+    if (isset($_POST['devices']) && $_POST['manufacturers'] == "") {
+        $sql = "SELECT * FROM products WHERE device_id LIKE '$device_id'";
+        $result = mysqli_query($con, $sql);
+        // check if there are any results
+        if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "Product Selected: " . $row["SN"] . "<br>";
             }
-        } elseif ($_POST['devices'] == "" && (isset($_POST['manufacturers']))) {
-            $sql = "SELECT * FROM products WHERE manufacturer_id LIKE '$manuf_id'";
-            $result = mysqli_query($con, $sql);
-            // check if there are any results
-            if (mysqli_num_rows($result) > 0) {
-                // output data of each row
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "Product Selected: " . $row["SN"] . "<br>";
-                }
-            } else {
-                echo "0 results";
-            }
-
         } else {
-            $sql = "SELECT * FROM products WHERE manufacturer_id = '$manuf_id' AND device_id = '$device_id'";
-            $result = mysqli_query($con, $sql);
-            // check if there are any results
-            if (mysqli_num_rows($result) > 0) {
-                // output data of each row
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "Product Selected: " . $row["SN"] . "<br>";
-                }
-            } else {
-                echo "0 results";
+            echo "0 results";
+        }
+    } elseif ($_POST['devices'] == "" && (isset($_POST['manufacturers']))) {
+        $sql = "SELECT * FROM products WHERE manufacturer_id LIKE '$manuf_id'";
+        $result = mysqli_query($con, $sql);
+        // check if there are any results
+        if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "Product Selected: " . $row["SN"] . "<br>";
             }
+        } else {
+            echo "0 results";
+        }
+
+    } else {
+        $sql = "SELECT * FROM products WHERE manufacturer_id = '$manuf_id' AND device_id = '$device_id'";
+        $result = mysqli_query($con, $sql);
+        // check if there are any results
+        if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "Product Selected: " . $row["SN"] . "<br>";
+            }
+        } else {
+            echo "0 results";
         }
     }
+}
+
     // close the connection
     mysqli_close($con);
 //    html_bottom();
