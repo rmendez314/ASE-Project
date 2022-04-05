@@ -7,8 +7,6 @@
     $devices = get_devices();
     $manufacturers = get_manufacturers();
     html_top("Home Page", "/styles/dark.css");
-
-
 ?>
 <div id="outer" class="container">
     <div class="container" id="form-container">
@@ -103,7 +101,6 @@
             </select>
             <input type="submit" id ="submit">
         </form>
-    </form>
     </div>
 </div>
 <div id="outer" class="container">
