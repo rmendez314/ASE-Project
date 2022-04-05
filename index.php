@@ -6,6 +6,7 @@
     $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
     $devices = get_devices();
     $manufacturers = get_manufacturers();
+    html_top("Home Page", "/styles/dark.css");
 
 
 ?>
@@ -114,5 +115,9 @@
     </form>
     </div>
 </div>
-<?php mysqli_close($con); ?>
+<?php
+    mysqli_close($con);
+    html_bottom();
+?>
+
 
