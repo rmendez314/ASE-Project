@@ -1,4 +1,14 @@
 <?php
+//#function to display a pop up window
+//function popup($url, $name, $width, $height) {
+//    echo "<a href=\"javascript: void(0);\" onClick=\"window.open('$url', '$name', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=$width, height=$height, left=0, top=0');\">";
+//}
+//echo '<script>
+//    myfunction()
+//</script>';
+//?>
+
+<?php
     include_once '.env.php';
     include_once 'db-queries.php';
     include_once 'modify-product.php';
@@ -6,7 +16,8 @@
     $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
     $devices = get_devices();
     $manufacturers = get_manufacturers();
-    html_top("Home Page", "/styles/dark.css");
+
+    html_top("eyi617-ASE-Project", "/styles/dark.css");
 ?>
 <div id="outer" class="container">
     <div class="container" id="form-container">
@@ -80,6 +91,7 @@
             <h2>Modify a Product</h2>
             <label for="modify-product">Enter the Product SN:</label>
             <input type="text" id="serial_number" name="serial_number">
+            <br>
             <label for="devices">Choose a Device:</label>
             <select id="devices" name="devices">
                 <option value="">Select a Device</option>
@@ -99,6 +111,10 @@
                     }
                 ?>
             </select>
+            <br>
+            <label for="is_active">Is Active:</label>
+            <input type="checkbox" id="is_active" name="is_active" value="1">
+            <br>
             <input type="submit" id ="submit">
         </form>
     </div>
@@ -106,7 +122,7 @@
 <div id="outer" class="container">
     <div class="container" id="form-container">
         <form id= "upload-file" action="index.php" method="post" >
-        <h3>Upload File</h3>
+        <h2>Upload File</h2>
         <input type="file" name="myfile"> <br>
         <button type="submit" name="save">upload</button>
     </form>

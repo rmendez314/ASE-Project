@@ -1,5 +1,4 @@
 <?php
-
 // connect to the database
 include '.env.php';
 // connect to the database

@@ -1,5 +1,70 @@
 <?php
-include_once ".env.php";
+    include_once "components/nav_bar.php";
+    include_once "components/footer.php";
+    include_once ".env.php";
+    include_once "./components/template_html.php";
+
+
+html_top("eyi617-ASE-Project", "/styles/dark.css");
+    // connect to the database
+    $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
+    // check connection
+    if (!$con) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    // check if post array is empty
+    if (!empty($_POST)) {
+        $device_id = $_POST['devices'];
+        $manuf_id = $_POST['manufacturers'];
+//        echo "Device Selected: " . $device_id . "<br>";
+//        echo "Manufacturer Selected: " . $manuf_id . "<br>";
+        if (isset($_POST['devices']) && $_POST['manufacturers'] == "") {
+            $sql = "SELECT SN FROM products WHERE device_id LIKE '$device_id'";
+            $result = mysqli_query($con, $sql);
+            // check if there are any results
+            if (mysqli_num_rows($result) > 0) {
+                // output data of each row
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<span class=\"d-block p-2 bg-dark text-white\">$row</span>";
+
+//                    echo $row["SN"] . "<br>";
+                }
+            } else {
+                echo "0 results";
+            }
+        } elseif ($_POST['devices'] == "" && (isset($_POST['manufacturers']))) {
+            $sql = "SELECT SN FROM products WHERE manufacturer_id LIKE '$manuf_id'";
+            $result = mysqli_query($con, $sql);
+            // check if there are any results
+            if (mysqli_num_rows($result) > 0) {
+                // output data of each row
+                while ($row = mysqli_fetch_assoc($result)) {
+//                    echo $row["SN"] . "<br>";
+                    echo "<span class=\"d-block p-2 bg-dark text-white\">$row</span>";
+                }
+            } else {
+                echo "0 results";
+            }
+        } else {
+            $sql = "SELECT SN FROM products WHERE manufacturer_id = '$manuf_id' AND device_id = '$device_id'";
+            $result = mysqli_query($con, $sql);
+            // check if there are any results
+            if (mysqli_num_rows($result) > 0) {
+                // output data of each row
+                while ($row = mysqli_fetch_assoc($result)) {
+//                    echo $row["SN"] . "<br>";
+                    echo "<span class=\"d-block p-2 bg-dark text-white\">$row</span>";
+
+                }
+            } else {
+                echo "0 results";
+            }
+        }
+    }
+    // close the connection
+    mysqli_close($con);
+    html_bottom();
+//    html_bottom();
 //# function to select products where device is like device_id
 //function select_devices($device_id) {
 //    console_log("Function: " . $device_id);
@@ -33,11 +98,11 @@ include_once ".env.php";
 //    }
 //}
 // connect to the database
-$con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
-// check connection
-if (!$con) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+//$con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
+//// check connection
+//if (!$con) {
+//    die("Connection failed: " . mysqli_connect_error());
+//}
 //$device_id = $_POST['devices'];
 //$manufacturer_id = $_POST['manufacturers'];
 //console_log("Device: " . $device_id);
@@ -59,53 +124,4 @@ if (!$con) {
 //} else {
 //    echo "Post is empty.";
 //}
-// check if post array is empty
-if (!empty($_POST)) {
-    $device_id = $_POST['devices'];
-    $manuf_id = $_POST['manufacturers'];
-    echo "Device Selected: " . $device_id . "<br>";
-    echo "Manufacturer Selected: " . $manuf_id . "<br>";
-    if (isset($_POST['devices']) && $_POST['manufacturers'] == "") {
-        $sql = "SELECT * FROM products WHERE device_id LIKE '$device_id'";
-        $result = mysqli_query($con, $sql);
-        // check if there are any results
-        if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "Product Selected: " . $row["SN"] . "<br>";
-            }
-        } else {
-            echo "0 results";
-        }
-    } elseif ($_POST['devices'] == "" && (isset($_POST['manufacturers']))) {
-        $sql = "SELECT * FROM products WHERE manufacturer_id LIKE '$manuf_id'";
-        $result = mysqli_query($con, $sql);
-        // check if there are any results
-        if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "Product Selected: " . $row["SN"] . "<br>";
-            }
-        } else {
-            echo "0 results";
-        }
-
-    } else {
-        $sql = "SELECT * FROM products WHERE manufacturer_id = '$manuf_id' AND device_id = '$device_id'";
-        $result = mysqli_query($con, $sql);
-        // check if there are any results
-        if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "Product Selected: " . $row["SN"] . "<br>";
-            }
-        } else {
-            echo "0 results";
-        }
-    }
-}
-
-    // close the connection
-    mysqli_close($con);
-//    html_bottom();
 ?>

@@ -1,11 +1,11 @@
-<link rel='stylesheet' type='text/css' href='styles/index.css' />
-<div id="back_button" class="back_button">
-    <!--    <h2><a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php">back</a></h2>-->
-    <button> <a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php"> Back </a></button>
-</div>
-<div>
 <?php
-    require_once ".env.php";
+    include_once "components/nav_bar.php";
+    include_once "components/footer.php";
+    include_once ".env.php";
+    include_once "./components/template_html.php";
+
+
+    html_top("eyi617-ASE-Project", "/styles/dark.css");
     // connect to the database
     $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
     // check connection
@@ -31,6 +31,7 @@
     }
     // close the connection
     mysqli_close($con);
+    html_bottom();
     ?>
 </div>
 
