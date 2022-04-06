@@ -25,9 +25,9 @@ html_top("eyi617-ASE-Project", "/styles/dark.css");
             if (mysqli_num_rows($result) > 0) {
                 // output data of each row
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<span class=\"d-block p-2 bg-dark text-white\">$row</span>";
+//                    echo "<span class=\"d-block p-2 bg-dark text-white\">$row</span>";
 
-//                    echo $row["SN"] . "<br>";
+                    echo $row["SN"] . "<br>";
                 }
             } else {
                 echo "0 results";
@@ -39,8 +39,8 @@ html_top("eyi617-ASE-Project", "/styles/dark.css");
             if (mysqli_num_rows($result) > 0) {
                 // output data of each row
                 while ($row = mysqli_fetch_assoc($result)) {
-//                    echo $row["SN"] . "<br>";
-                    echo "<span class=\"d-block p-2 bg-dark text-white\">$row</span>";
+                    echo $row["SN"] . "<br>";
+//                    echo "<span class=\"d-block p-2 bg-dark text-white\">$row</span>";
                 }
             } else {
                 echo "0 results";
@@ -52,8 +52,8 @@ html_top("eyi617-ASE-Project", "/styles/dark.css");
             if (mysqli_num_rows($result) > 0) {
                 // output data of each row
                 while ($row = mysqli_fetch_assoc($result)) {
-//                    echo $row["SN"] . "<br>";
-                    echo "<span class=\"d-block p-2 bg-dark text-white\">$row</span>";
+                    echo $row["SN"] . "<br>";
+//                    echo "<span class=\"d-block p-2 bg-dark text-white\">$row</span>";
 
                 }
             } else {
