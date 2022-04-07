@@ -42,7 +42,8 @@
                     }
                 ?>
             </select>
-            <input type="submit" id ="submit">
+            <br>
+            <input type="submit" id ="submit" class="btn btn-primary">
         </form>
     </div>
 </div>
@@ -53,7 +54,8 @@
             <h2>Enter a Serial Number</h2>
             <label for="serial_number">Serial Number:</label>
             <input type="text" id="serial_number" name="serial_number">
-            <input type="submit" id="submit">
+            <br>
+            <input type="submit" id="submit" class="btn btn-primary">
         </div>
     </form>
     </div>
@@ -64,7 +66,8 @@
         <h2>Add a New Device Type</h2>
         <label for="add-device">Add Device Type:</label>
         <input type="text" id="add-device" name="add-device">
-        <input type="submit" id="submit">
+        <br>
+        <input type="submit" id="submit" class="btn btn-primary">
     </form>
     </div>
 </div>
@@ -81,7 +84,8 @@
                 }
             ?>
         </select>
-        <input type="submit" id="submit">
+        <br>
+        <input type="submit" id="submit" class="btn btn-primary">
     </form>
     </div>
 </div>
@@ -115,17 +119,21 @@
             <label for="is_active">Is Active:</label>
             <input type="checkbox" id="is_active" name="is_active" value="1">
             <br>
-            <input type="submit" id ="submit">
+            <input type="submit" id ="submit" class="btn btn-primary">
         </form>
     </div>
 </div>
 <div id="outer" class="container">
     <div class="container" id="form-container">
-        <form id= "upload-file" action="index.php" method="post" >
+        <form id= "upload-file" action="files-logic.php" method="post">
         <h2>Upload File</h2>
+        <div id="SN-form">
+            <label for="serial_number">Product Serial Number:</label>
+            <input type="text" id="serial_number" name="serial_number">
+        </div>
         <input type="file" name="myfile"> <br>
-        <button type="submit" name="save">upload</button>
-    </form>
+        <button type="submit" name="upload" class="btn btn-primary">Upload</button>
+        </form>
     </div>
 </div>
 <?php

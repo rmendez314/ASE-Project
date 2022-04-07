@@ -1,8 +1,17 @@
 <?php
 // connect to the database
-include '.env.php';
+include_once "components/nav_bar.php";
+include_once "components/footer.php";
+include_once ".env.php";
+include_once "./components/template_html.php";
+
+
+html_top("eyi617-ASE-Project", "/styles/dark.css");
 // connect to the database
 $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
+echo "File Uploaded Successfully";
+echo $_POST['upload-file'];
+console_log($_POST['upload-file']);
 // Uploads files
 if (isset($_POST['save'])) { // if save button on the form is clicked
     // name of the uploaded file
@@ -34,3 +43,7 @@ if (isset($_POST['save'])) { // if save button on the form is clicked
         }
     }
 }
+html_bottom();
+# close connection
+mysqli_close($con);
+?>

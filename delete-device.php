@@ -1,9 +1,3 @@
-<link rel='stylesheet' type='text/css' href='styles/index.css' />
-<div id="back_button" class="back_button">
-    <!--    <h2><a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php">back</a></h2>-->
-    <button> <a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php"> Back </a></button>
-</div>
-<div>
 <?php
     require_once ".env.php";
     // connect to the database
@@ -18,8 +12,8 @@
     $sql = "DELETE FROM devices WHERE auto_id = '$delete_device'";
     $result = mysqli_query($con, $sql);
     // check if the data was inserted
-    if (mysqli_query($con, $sql)) {
-        echo "Delete successful";
+    if($result){
+        header("Location:index.php");
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($con);
     }

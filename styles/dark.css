@@ -173,15 +173,21 @@ nav.navbar {
   border: none;
   outline: none;
 }
+.inline{
+  display: inline-block;
+  float: right;
+  margin: 20px 0px;
+}
 
 .btn.btn-primary:hover, 
 .page-link:hover,
 .page-link:active,
 .page-link:focus {
-  background-color: #262626;
+  /*background-color: #262626;*/
   /*background-color: white;*/
+  background-color: darkgreen;
   /*color: #c1adea;*/
-  color: #262626;
+  color: whitesmoke;
 }
 
 #dropdown{

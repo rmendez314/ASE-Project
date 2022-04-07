@@ -1,9 +1,3 @@
-<link rel='stylesheet' type='text/css' href='styles/index.css' />
-<div id="back_button" class="back_button">
-    <!--    <h2><a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php">back</a></h2>-->
-    <button> <a href="http://ec2-54-146-181-156.compute-1.amazonaws.com/index.php"> Back </a></button>
-</div>
-<div>
 <?php
 require_once ".env.php";
 // connect to the database
@@ -26,15 +20,20 @@ if (!$con) {
 //}
     // get the data from the form
     $new_device = $_POST['add-device'];
-    // insert the data into the database in devices table
-    $sql = "INSERT INTO devices (device_type) VALUES ('$new_device')";
+    // check if the device is already in the database
+    $sql = "SELECT * FROM devices WHERE device_type = '$new_device'";
     $result = mysqli_query($con, $sql);
-    // check if the data was inserted
-    if ($result) {
-        echo "New record created successfully";
-        header("Location: index.php");
+    if (mysqli_num_rows($result) > 0) {
+        echo "Device already exists";
     } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($con);
+        // insert the new device into the database
+        $sql = "INSERT INTO devices (device_type) VALUES ('$new_device')";
+        $result = mysqli_query($con, $sql);
+        if ($result) {
+            header("Location: index.php");
+        } else {
+            echo "Error: " . $sql . "<br>" . mysqli_error($con);
+        }
     }
     // close the connection
     mysqli_close($con);

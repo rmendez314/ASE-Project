@@ -12,35 +12,44 @@
     $serial_number = $_POST['serial_number'];
     $device_id = $_POST['devices'];
     $manufacturer = $_POST['manufacturers'];
-    $sql = "UPDATE products ";  // SET device_id = '$device_id', manufacturer_id = '$manufacturer' WHERE SN = '$serial_number'";
-    if ($_POST['is_active'] == null){
-        if (isset($device_id) && $device_id != "") {
-            $sql .= "SET device_id = '$device_id' ";
-        }
-        if (isset($manufacturer) && $manufacturer != "") {
+    # check if serial number is already in the database
+    $sql = "SELECT * FROM products WHERE serial_number = '$serial_number'";
+    $result = mysqli_query($con, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        $sql = "UPDATE products ";  // SET device_id = '$device_id', manufacturer_id = '$manufacturer' WHERE SN = '$serial_number'";
+        if ($_POST['is_active'] == null){
             if (isset($device_id) && $device_id != "") {
-                $sql .= ", manufacturer_id = '$manufacturer', is_active = 0 ";
-            } else {
-                $sql .= "SET manufacturer_id = '$manufacturer', is_active = 0 ";
+                $sql .= "SET device_id = '$device_id' ";
             }
+            if (isset($manufacturer) && $manufacturer != "") {
+                if (isset($device_id) && $device_id != "") {
+                    $sql .= ", manufacturer_id = '$manufacturer', is_active = 0 ";
+                } else {
+                    $sql .= "SET manufacturer_id = '$manufacturer', is_active = 0 ";
+                }
+            }
+        } else {
+            if (isset($device_id) && $device_id != "") {
+                $sql .= "SET device_id = '$device_id' ";
+            }
+            if (isset($manufacturer) && $manufacturer != "") {
+                if (isset($device_id) && $device_id != "") {
+                    $sql .= ", manufacturer_id = '$manufacturer', is_active = 1 ";
+                } else {
+                    $sql .= "SET manufacturer_id = '$manufacturer' is_active = 1 ";
+                }
+            }
+        }
+        $sql = $sql .  " WHERE SN = '$serial_number';";
+        $result = mysqli_query($con, $sql);
+        if ($result) {
+            header("Location:index.php");
         }
     } else {
-        if (isset($device_id) && $device_id != "") {
-            $sql .= "SET device_id = '$device_id' ";
-        }
-        if (isset($manufacturer) && $manufacturer != "") {
-            if (isset($device_id) && $device_id != "") {
-                $sql .= ", manufacturer_id = '$manufacturer', is_active = 1 ";
-            } else {
-                $sql .= "SET manufacturer_id = '$manufacturer' is_active = 1 ";
-            }
-        }
+
     }
-    $sql = $sql .  " WHERE SN = '$serial_number';";
-    $result = mysqli_query($con, $sql);
-    if ($result) {
-        header("Location:index.php");
-    }
+
     // close connection
     mysqli_close($con);
     # redirect back to index.php

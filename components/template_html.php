@@ -20,7 +20,7 @@
 				<body>";
 			nav_bar();
 			echo " <!--Main layout-->
-					<main style=\"margin-top: 58px\">
+					<main style=\"margin-top: 0px\">
 						<div id=\"container\">";
 
 	}
