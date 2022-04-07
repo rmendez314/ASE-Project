@@ -1,5 +1,5 @@
 <?php
-//    nav_bar();
+    //    nav_bar();
     include_once ".env.php";
     // connect to the database
     $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
@@ -7,7 +7,7 @@
     if (!$con) {
         die("Connection failed: " . mysqli_connect_error());
     }
-    console_log($_POST['is_active']);
+//    console_log($_POST['is_active']);
     # update the product with new manufacturer and device
     $serial_number = $_POST['serial_number'];
     $device_id = $_POST['devices'];
@@ -46,8 +46,6 @@
         if ($result) {
             header("Location:index.php");
         }
-    } else {
-
     }
 
     // close connection

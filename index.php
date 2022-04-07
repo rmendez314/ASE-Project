@@ -21,7 +21,7 @@
 ?>
 <div id="outer" class="container">
     <div class="container" id="form-container">
-        <form id="drop-down" action="drop-down-result.php" method="post">
+        <form id="drop-down" action="drop-down-result.php?page=1" method="post">
             <h2>Query Products</h2>
             <label for="devices">Choose a Device:</label>
             <select id="devices" name="devices">

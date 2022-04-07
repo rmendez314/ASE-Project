@@ -237,3 +237,26 @@ label {
   margin-right: auto;
 }
 
+.anyClass {
+  height:150px;
+  overflow-y: scroll;
+}
+
+.center-pagination {
+  /*position: relative;*/
+  padding-top: 10px;
+  /*border: 1px solid whitesmoke;*/
+  /*border: 1px solid #262626;*/
+  border-radius: 5px;
+  margin: auto;
+  width: 80%;
+  text-align: center;
+}
+#pagination-container.container {
+  /*position: relative;*/
+  padding-top: 10px;
+  /*border: 1px solid whitesmoke;*/
+  border-radius: 10px;
+  margin: auto;
+}
+

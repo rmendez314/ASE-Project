@@ -26,6 +26,11 @@
     $sql = "SELECT COUNT(*) AS TOTAL FROM products WHERE device_id LIKE '$device_id'";
     $result =  mysqli_query($con, $sql);
     $number_of_result = mysqli_fetch_assoc($result);
+    # if there are no results, return to index page
+    if($number_of_result['TOTAL'] == 0){
+        mysqli_close($con);
+        header("Location: index.php");
+    }
     $number_of_pages = ceil($number_of_result['TOTAL'] / $results_per_page);
     console_log($number_of_pages);
     //determine which page number visitor is currently on
@@ -35,19 +40,20 @@
         $page = $_GET['page'];
         $current_page = $_GET['page'];
     }
+    echo "<table class=\"table table-striped\" >
+                <thead>
+                    <th>Product ID</th>
+                    <th>Device</th>
+                    <th>Manufacturer</th>
+                    <th>Serial Number</th>
+                    <th>Status</th>
+                </thead>
+                <tbody>";
     $page_first_result = ($page-1) * $results_per_page;
     if (isset($_COOKIE['devices']) && $_COOKIE['manufacturers'] == "") {
         $sql = "SELECT * FROM products WHERE device_id LIKE '$device_id' LIMIT " . $page_first_result . ',' . $results_per_page;
         $result = mysqli_query($con, $sql);
-        echo "<table class=\"table table-striped\">
-            <thead>
-                <th>Product ID</th>
-                <th>Device</th>
-                <th>Manufacturer</th>
-                <th>Serial Number</th>
-                <th>Status</th>
-            </thead>
-            <tbody>";
+
         // check if there are any results
         if (mysqli_num_rows($result) > 0) {
             // output data of each row
@@ -77,15 +83,15 @@
     } elseif ($_COOKIE['devices'] == "" && (isset($_COOKIE['manufacturers']))) {
         $sql = "SELECT * FROM products WHERE manufacturer_id LIKE '$manuf_id' LIMIT " . $page_first_result . ',' . $results_per_page;
         $result = mysqli_query($con, $sql);
-        echo "<table class=\"table table-striped\">
-            <thead>
-                <th>Product ID</th>
-                <th>Device</th>
-                <th>Manufacturer</th>
-                <th>Serial Number</th>
-                <th>Status</th>
-            </thead>
-            <tbody>";
+//        echo "<table class=\"table table-striped\">
+//            <thead>
+//                <th>Product ID</th>
+//                <th>Device</th>
+//                <th>Manufacturer</th>
+//                <th>Serial Number</th>
+//                <th>Status</th>
+//            </thead>
+//            <tbody>";
         // check if there are any results
         if (mysqli_num_rows($result) > 0) {
             // output data of each row
@@ -115,15 +121,15 @@
     } else {
         $sql = "SELECT * FROM products WHERE manufacturer_id = '$manuf_id' AND device_id = '$device_id' LIMIT " . $page_first_result . ',' . $results_per_page;;
         $result = mysqli_query($con, $sql);
-        echo "<table class=\"table table-striped\">
-            <thead>
-                <th>Product ID</th>
-                <th>Device</th>
-                <th>Manufacturer</th>
-                <th>Serial Number</th>
-                <th>Status</th>
-            </thead>
-            <tbody>";
+//        echo "<table class=\"table table-striped\">
+//            <thead>
+//                <th>Product ID</th>
+//                <th>Device</th>
+//                <th>Manufacturer</th>
+//                <th>Serial Number</th>
+//                <th>Status</th>
+//            </thead>
+//            <tbody>";
         // check if there are any results
         if (mysqli_num_rows($result) > 0) {
             // output data of each row
@@ -150,41 +156,45 @@
 
         }
     }
+
     echo "    </tbody>
                   </table>";
     ?>
-<div style="min-padding-left: 30px; padding-right: 30px; padding-top: 20px;">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <?php
-             if($page != 1) {
-                    echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=" . ($page-1) . "\">Previous</a></li>";
-             }
-             console_log($number_of_pages);
-            if($page >= ($number_of_pages-20)) {
-                for($page = $number_of_pages-20; $page<= $number_of_pages; $page++) {
-                    echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=$page\">$page</a></li>";
+<div id="outer" class="center-pagination">
+    <div class="container" id="pagination-container">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <?php
+                 if($page != 1) {
+                        echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=" . ($current_page-1) . "\">Previous</a></li>";
+                 } else {
+                        echo "<li class=\"page-item disabled\"><a class=\"page-link\" href=\"#\">Previous</a></li>";
+                 }
+                if($page >= ($number_of_pages-20)) {
+                    for($page = $number_of_pages-20; $page<= $number_of_pages; $page++) {
+                        echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=$page\">$page</a></li>";
+                    }
+                } else {
+                    for($page = $current_page; $page<= $current_page+20; $page++) {
+                        echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=$page\">$page</a></li>";
+                    }
                 }
-            } else {
-                for($page = $current_page; $page<= $current_page+20; $page++) {
-                    echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=$page\">$page</a></li>";
-                }
-            }
-            echo "<li class=\"page-item\"><a class=\"page-link\">...</a></li>";
-            console_log($number_of_pages);
-            echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=$number_of_pages\">$number_of_pages</a></li>";
+                echo "<li class=\"page-item\"><a class=\"page-link\">...</a></li>";
+                console_log($number_of_pages);
+                echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=$number_of_pages\">$number_of_pages</a></li>";
 
-            if($page != $number_of_pages) {
-                    echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=" . ($page+1) . "\">Next</a></li>";
-            }
-            ?>
-        </ul>
-    </nav>
+                if($page != $number_of_pages) {
+                        echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=" . ($current_page+1) . "\">Next</a></li>";
+                }
+                ?>
+            </ul>
+        </nav>
+    </div>
 </div>
 <?php
-    // close the connection
-    mysqli_close($con);
-    html_bottom();
+// close the connection
+mysqli_close($con);
+html_bottom();
 //    html_bottom();
 //# function to select products where device is like device_id
 //function select_devices($device_id) {
