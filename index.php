@@ -24,6 +24,7 @@
         <form id="drop-down" action="drop-down-result.php?page=1" method="post">
             <h2>Query Products</h2>
             <label for="devices">Choose a Device:</label>
+            <br>
             <select id="devices" name="devices">
                 <option value="">Select a Device</option>
                 <?php

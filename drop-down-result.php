@@ -40,7 +40,7 @@
         $page = $_GET['page'];
         $current_page = $_GET['page'];
     }
-    echo "<table class=\"table table-striped\" >
+    echo "<table class=\"table table-striped\" style='min-width: 1000px;'>
                 <thead>
                     <th>Product ID</th>
                     <th>Device</th>
@@ -162,7 +162,7 @@
     ?>
 <div id="outer" class="center-pagination">
     <div class="container" id="pagination-container">
-        <nav aria-label="Page navigation example">
+        <nav aria-label="Page navigation example" style="min-width: 500px;">
             <ul class="pagination">
                 <?php
                  if($page != 1) {
@@ -180,11 +180,12 @@
                     }
                 }
                 echo "<li class=\"page-item\"><a class=\"page-link\">...</a></li>";
-                console_log($number_of_pages);
                 echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=$number_of_pages\">$number_of_pages</a></li>";
-
-                if($page != $number_of_pages) {
-                        echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=" . ($current_page+1) . "\">Next</a></li>";
+                console_log($page);
+                if($current_page < $number_of_pages) {
+                    echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=" . ($current_page+1) . "\">Next</a></li>";
+                } else {
+                    echo "<li class=\"page-item disabled\"><a class=\"page-link\" href=\"drop-down-result.php?page=" . ($current_page+1) ."\">Next</a></li>";
                 }
                 ?>
             </ul>

@@ -33,32 +33,33 @@
                         aria-controls=\"navbarsExample05\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">
                         <span class=\"navbar-toggler-icon\"></span>
                     </button>
-                    <div class=\"collapse navbar-collapse\" id=\"navbarsExample05\">
-                        <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">
-                            <li class=\"nav-item dropdown\">
-                                <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"dropdown\" data-bs-toggle=\"dropdown\"
-                                aria-expanded=\"false\">Options</a>
-                                <ul class=\"dropdown-menu\" aria-labelledby=\"dropdown\">";
-
-                                if(!empty($_SESSION['user_id'])){
-                                    echo "$str";
-                                }
-                                else{
-                                    echo "$str1 $str2";
-                                }    
-                                echo "
-                                </ul>
-                            </li>
-                        </ul>
-                        <div>
-                            $user_name
-                        </div>
-                    </div> 
+                    
                 </div>
             </nav>
                ";
     }
-
+    //login drop down nav menu
+//<div class=\"collapse navbar-collapse\" id=\"navbarsExample05\">
+//                        <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">
+//                            <li class=\"nav-item dropdown\">
+//                                <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"dropdown\" data-bs-toggle=\"dropdown\"
+//                                aria-expanded=\"false\">Options</a>
+//                                <ul class=\"dropdown-menu\" aria-labelledby=\"dropdown\">";
+//
+//                                if(!empty($_SESSION['user_id'])){
+//                                    echo "$str";
+//                                }
+//                                else{
+//                                    echo "$str1 $str2";
+//                                }
+//                                echo "
+//                                </ul>
+//                            </li>
+//                        </ul>
+//                        <div>
+//                            $user_name
+//                        </div>
+//                    </div>
 //<li class=\"nav-item\">
 //                                <a class=\"nav-link active\" aria-current=\"page\" href=\"/\">Home</a>
 //                            </li>
