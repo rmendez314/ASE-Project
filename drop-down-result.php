@@ -3,9 +3,6 @@
     include_once "components/footer.php";
     include_once ".env.php";
     include_once "./components/template_html.php";
-
-
-
     html_top("eyi617-ASE-Project", "/styles/dark.css");
     // connect to the database
     $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
@@ -13,7 +10,6 @@
     if (!$con) {
         die("Connection failed: " . mysqli_connect_error());
     }
-    // if post is set then set the cookie or pulling the cookie
     if(!empty($_POST)){
         $device_id = $_POST['devices'];
         $manuf_id = $_POST['manufacturers'];
@@ -23,9 +19,15 @@
         $device_id = $_COOKIE['devices'];
         $manuf_id = $_COOKIE['manufacturers'];
     }
-    // handle pagination variables
     $results_per_page = 1000;
-    $sql = "SELECT COUNT(*) AS TOTAL FROM products WHERE device_id LIKE '$device_id'";
+    $sql = "";
+    if($device_id != "" && $manuf_id == ""){
+        $sql = "SELECT COUNT(*) AS TOTAL FROM products WHERE device_id LIKE '$device_id'";
+    } else if($device_id == "" && $manuf_id != ""){
+        $sql = "SELECT COUNT(*) AS TOTAL FROM products WHERE manufacturer_id LIKE '$manuf_id'";
+    } else {
+        $sql = "SELECT COUNT(*) AS TOTAL FROM products WHERE device_id LIKE '$device_id' AND manufacturer_id LIKE '$manuf_id'";
+    }
     $result =  mysqli_query($con, $sql);
     $number_of_result = mysqli_fetch_assoc($result);
     # if there are no results, return to index page
@@ -34,8 +36,6 @@
         header("Location: index.php");
     }
     $number_of_pages = ceil($number_of_result['TOTAL'] / $results_per_page);
-
-    console_log($number_of_pages);
     //determine which page number visitor is currently on
     if (!isset($_GET['page']) ) {
         $page = 1;
@@ -54,27 +54,76 @@
                 <tbody>";
     $page_first_result = ($page-1) * $results_per_page;
     if (isset($_COOKIE['devices']) && $_COOKIE['manufacturers'] == "") {
-//        $sql = "SELECT * FROM products WHERE device_id LIKE '$device_id' LIMIT " . $page_first_result . ',' . $results_per_page;
-        $sql = "SELECT *
+        $sql = "SELECT *, products.auto_id AS product_id
                 FROM products 
                 INNER JOIN devices ON products.device_id = devices.auto_id 
-                INNER JOIN manufacturers ON products.manufacturer_id = manufacturers.auto_id
-                WHERE products.device_id LIKE '$device_id' LIMIT " . $page_first_result . ',' . $results_per_page;
+                INNER JOIN manufacturers ON products.manufacturer_id = manufacturers.auto_id 
+                WHERE device_id LIKE '$device_id' 
+                LIMIT " . $page_first_result . ',' . $results_per_page;
         $result = mysqli_query($con, $sql);
-        echo "<h1>Displaying ".$result['device_type']."</h1>";
         // check if there are any results
         if (mysqli_num_rows($result) > 0) {
             // output data of each row
-            $row = mysqli_fetch_all($result);
-            while ($row) {
-//                $sql = "SELECT manufacturer FROM manufacturers WHERE auto_id = '$row[manufacturer_id]'";
-//                $result2 = mysqli_query($con, $sql);
-//                $sql = "SELECT device_type FROM devices WHERE auto_id = '$row[device_id]'";
-//                $result3 = mysqli_query($con, $sql);
-//                $manufacturer = mysqli_fetch_assoc($result2);
-//                $device_type = mysqli_fetch_assoc($result3);
+            while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>
-                    <td>" . $row['auto_id'] . "</td>
+                        <td>" . $row['product_id'] . "</td>
+                        <td>" . $row['device_type'] . "</td>  
+                        <td>" . $row['manufacturer'] . "</td>
+                        <td>" . $row['SN'] . "</td>
+                   ";
+                if ($row['is_active'] == 1) {
+                    echo "<td>Active</td>";
+                } else {
+                    echo "<td>Inactive</td>";
+                }
+                echo "</tr>";
+            }
+        } else {
+            echo "<h3>No results found</h3>";
+        }
+    } elseif ($_COOKIE['devices'] == "" && (isset($_COOKIE['manufacturers']))) {
+        $sql = "SELECT *, products.auto_id AS product_id
+                FROM products 
+                INNER JOIN devices ON products.device_id = devices.auto_id 
+                INNER JOIN manufacturers ON products.manufacturer_id = manufacturers.auto_id 
+                WHERE manufacturer_id LIKE '$manuf_id' 
+                LIMIT " . $page_first_result . ',' . $results_per_page;
+        $result = mysqli_query($con, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>
+                            <td>" . $row['product_id'] . "</td>
+                            <td>" . $row['device_type'] . "</td>  
+                            <td>" . $row['manufacturer'] . "</td>
+                            <td>" . $row['SN'] . "</td>
+                          ";
+                if ($row['is_active'] == 1) {
+                    echo "<td>Active</td>";
+                } else {
+                    echo "<td>Inactive</td>";
+                }
+                echo "</tr>";
+            }
+        } else {
+            echo "<h3>No results found</h3>";
+        }
+} else {
+        $sql = "SELECT *, products.auto_id AS product_id
+                FROM products 
+                INNER JOIN devices ON products.device_id = devices.auto_id 
+                INNER JOIN manufacturers ON products.manufacturer_id = manufacturers.auto_id 
+                WHERE device_id LIKE '$device_id'
+                AND manufacturer_id LIKE '$manuf_id'  
+                LIMIT " . $page_first_result . ',' . $results_per_page;
+//        $sql = "SELECT * FROM products WHERE manufacturer_id = '$manuf_id' AND device_id = '$device_id' LIMIT " . $page_first_result . ',' . $results_per_page;;
+        $result = mysqli_query($con, $sql);
+        // check if there are any results
+        if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>
+                    <td>" . $row['product_id'] . "</td>
                     <td>" . $row['device_type'] . "</td>  
                     <td>" . $row['manufacturer'] . "</td>
                     <td>" . $row['SN'] . "</td>
@@ -86,83 +135,9 @@
                 }
                 echo "</tr>";
             }
-        } else {
-//                echo "0 results";
-        }
-    } elseif ($_COOKIE['devices'] == "" && (isset($_COOKIE['manufacturers']))) {
-        $sql = "SELECT * FROM products WHERE manufacturer_id LIKE '$manuf_id' LIMIT " . $page_first_result . ',' . $results_per_page;
-        $result = mysqli_query($con, $sql);
-//        echo "<table class=\"table table-striped\">
-//            <thead>
-//                <th>Product ID</th>
-//                <th>Device</th>
-//                <th>Manufacturer</th>
-//                <th>Serial Number</th>
-//                <th>Status</th>
-//            </thead>
-//            <tbody>";
-        // check if there are any results
-        if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while ($row = mysqli_fetch_assoc($result)) {
-                $sql = "SELECT manufacturer FROM manufacturers WHERE auto_id = '$row[manufacturer_id]'";
-                $result2 = mysqli_query($con, $sql);
-                $sql = "SELECT device_type FROM devices WHERE auto_id = '$row[device_id]'";
-                $result3 = mysqli_query($con, $sql);
-                $manufacturer = mysqli_fetch_assoc($result2);
-                $device_type = mysqli_fetch_assoc($result3);
-                echo "<tr>
-                    <td>" . $row['auto_id'] . "</td>
-                    <td>" . $device_type['device_type'] . "</td>  
-                    <td>" . $manufacturer['manufacturer'] . "</td>
-                    <td>" . $row['SN'] . "</td>
-                  ";
-                if ($row['is_active'] == 1) {
-                    echo "<td>Active</td>";
-                } else {
-                    echo "<td>Inactive</td>";
-                }
-                echo "</tr>";
-            }
-        } else {
-//                echo "0 results";
-        }
-    } else {
-        $sql = "SELECT * FROM products WHERE manufacturer_id = '$manuf_id' AND device_id = '$device_id' LIMIT " . $page_first_result . ',' . $results_per_page;;
-        $result = mysqli_query($con, $sql);
-//        echo "<table class=\"table table-striped\">
-//            <thead>
-//                <th>Product ID</th>
-//                <th>Device</th>
-//                <th>Manufacturer</th>
-//                <th>Serial Number</th>
-//                <th>Status</th>
-//            </thead>
-//            <tbody>";
-        // check if there are any results
-        if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while ($row = mysqli_fetch_assoc($result)) {
-                $sql = "SELECT manufacturer FROM manufacturers WHERE auto_id = '$row[manufacturer_id]'";
-                $result2 = mysqli_query($con, $sql);
-                $sql = "SELECT device_type FROM devices WHERE auto_id = '$row[device_id]'";
-                $result3 = mysqli_query($con, $sql);
-                $manufacturer = mysqli_fetch_assoc($result2);
-                $device_type = mysqli_fetch_assoc($result3);
-                echo "<tr>
-                    <td>" . $row['auto_id'] . "</td>
-                    <td>" . $device_type['device_type'] . "</td>  
-                    <td>" . $manufacturer['manufacturer'] . "</td>
-                    <td>" . $row['SN'] . "</td>
-               ";
-                if ($row['is_active'] == 1) {
-                    echo "<td>Active</td>";
-                } else {
-                    echo "<td>Inactive</td>";
-                }
-                echo "</tr>";
-            }
 
+        } else {
+            echo "<h3>No results found</h3>";
         }
     }
 
@@ -190,7 +165,6 @@
                 }
                 echo "<li class=\"page-item\"><a class=\"page-link\">...</a></li>";
                 echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=$number_of_pages\">$number_of_pages</a></li>";
-                console_log($page);
                 if($current_page < $number_of_pages) {
                     echo "<li class=\"page-item\"><a class=\"page-link\" href=\"drop-down-result.php?page=" . ($current_page+1) . "\">Next</a></li>";
                 } else {
