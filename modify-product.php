@@ -1,7 +1,6 @@
 <?php
     //    nav_bar();
-    include_once ".env.php";
-    // connect to the database
+    include_once ".env.php";    // connect to the database
     $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
     // check connection
     if (!$con) {
@@ -12,11 +11,12 @@
     $serial_number = $_POST['serial_number'];
     $device_id = $_POST['devices'];
     $manufacturer = $_POST['manufacturers'];
-    # check if serial number is already in the database
-    $sql = "SELECT * FROM products WHERE serial_number = '$serial_number'";
-    $result = mysqli_query($con, $sql);
 
+    # check if serial number is already in the database
+    $sql = "SELECT * FROM products WHERE SN = '$serial_number'";
+    $result = mysqli_query($con, $sql);
     if (mysqli_num_rows($result) > 0) {
+        console_log("inside if");
         $sql = "UPDATE products ";  // SET device_id = '$device_id', manufacturer_id = '$manufacturer' WHERE SN = '$serial_number'";
         if ($_POST['is_active'] == null){
             if (isset($device_id) && $device_id != "") {
@@ -41,10 +41,12 @@
                 }
             }
         }
-        $sql = $sql .  " WHERE SN = '$serial_number';";
+        $sql = $sql .  " WHERE SN = '$serial_number'";
         $result = mysqli_query($con, $sql);
         if ($result) {
             header("Location:index.php");
+        } else {
+            echo "Error: " . $sql . "<br>" . mysqli_error($con);
         }
     }
 

@@ -2,7 +2,7 @@
 // connect to the database
 include_once "components/nav_bar.php";
 include_once "components/footer.php";
-include_once ".env.php";
+include_once ".env.php";    // connect to the database
 include_once "./components/template_html.php";
 include_once "./components/more-info.php";
 

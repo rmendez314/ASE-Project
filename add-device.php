@@ -1,5 +1,5 @@
 <?php
-require_once ".env.php";
+include_once ".env.php";    // connect to the database
 // connect to the database
 $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
 // check connection

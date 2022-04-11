@@ -9,10 +9,10 @@
 //?>
 
 <?php
-    include_once '.env.php';
-    include_once 'db-queries.php';
-    include_once 'modify-product.php';
-    include_once "./components/template_html.php";
+    include_once ".env.php";    // connect to the database
+    include_once "components/db-queries.php";
+//    include_once 'modify-product.php';
+    include_once "components/template_html.php";
     $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
     $devices = get_devices();
     $manufacturers = get_manufacturers();

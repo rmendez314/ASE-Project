@@ -1,8 +1,9 @@
 <?php
     include_once "components/nav_bar.php";
     include_once "components/footer.php";
-    include_once ".env.php";
-    include_once "./components/template_html.php";
+    include_once ".env.php";    // connect to the database
+    include_once "components/template_html.php";
+
     html_top("eyi617-ASE-Project", "/styles/dark.css");
     // connect to the database
     $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
@@ -39,6 +40,7 @@
     //determine which page number visitor is currently on
     if (!isset($_GET['page']) ) {
         $page = 1;
+        $current_page = 1;
     } else {
         $page = $_GET['page'];
         $current_page = $_GET['page'];
@@ -50,6 +52,7 @@
                     <th>Manufacturer</th>
                     <th>Serial Number</th>
                     <th>Status</th>
+                    <th>Update</th>
                 </thead>
                 <tbody>";
     $page_first_result = ($page-1) * $results_per_page;
@@ -76,6 +79,20 @@
                 } else {
                     echo "<td>Inactive</td>";
                 }
+                echo"
+                    <td>
+                        <form action=\"update-product.php\" method=\"post\">
+                            <input type='hidden' name='current_page' id='current_page' value='$current_page'>
+                            <button 
+                                type='submit' 
+                                class='btn btn-primary' 
+                                name='update_product' 
+                                id = 'update_product'
+                                value='" . $row['SN'] . "'>
+                                Update
+                            </button>
+                        </form>
+                    </td>";
                 echo "</tr>";
             }
         } else {
@@ -103,6 +120,20 @@
                 } else {
                     echo "<td>Inactive</td>";
                 }
+                echo"
+                    <td>
+                        <form action=\"update-product.php\" method=\"post\">
+                            <input type='hidden' name='current_page' id='current_page' value='$current_page'>
+                            <button 
+                                type='submit' 
+                                class='btn btn-primary' 
+                                name='update_product' 
+                                id = 'update_product'
+                                value='" . $row['SN'] . "'>
+                                Update
+                            </button>
+                        </form>
+                    </td>";
                 echo "</tr>";
             }
         } else {
@@ -133,6 +164,20 @@
                 } else {
                     echo "<td>Inactive</td>";
                 }
+                echo"
+                    <td>
+                        <form action=\"update-product.php\" method=\"post\">
+                            <input type='hidden' name='current_page' id='current_page' value='$current_page'>
+                            <button 
+                                type='submit' 
+                                class='btn btn-primary' 
+                                name='update_product' 
+                                id = 'update_product'
+                                value='" . $row['SN'] . "'>
+                                Update
+                            </button>
+                        </form>
+                    </td>";
                 echo "</tr>";
             }
 
