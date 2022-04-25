@@ -20,14 +20,26 @@ switch ($endpoint){
     case "update-product":
         echo "Update product<br>";
         break;
+    case "update-device":
+        echo "Update device<br>";
+        break;
     case "delete-device":
         echo "Delete device<br>";
         break;
     case "upload-file":
         echo "Upload file<br>";
         break;
-    case "modify-product":
-        echo "Modify product<br>";
+    case "list-devices":
+        include "./list-devices.php";
+        break;
+    case "list-manufacturers":
+        include "./list-manufacturers.php";
+        break;
+    case "search-product":
+        echo "Search product<br>";
+        break;
+    case "view-device-SN":
+        echo "View device SN<br>";
         break;
     default:
         header('Content-Type: application/json');
