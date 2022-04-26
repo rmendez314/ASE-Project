@@ -4,24 +4,6 @@ $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
-//$did =$_REQUEST['did'];
-//if(!is_numeric($did) && $did != null){
-//    header('Content-Type: application/json');
-//    header('HTTP/1.1 200 OK');
-//    $message[] = "Status: Invalid Data";
-//    $message[] = "MSG: Device ID must be numbers only";
-//    $message[] = "";
-//    $responseData = json_encode($message);
-//    die();
-//} else if ($did == null) {
-//  header('Content-Type: application/json');
-//    header('HTTP/1.1 200 OK');
-//    $message[] = "Status: Invalid Data";
-//    $message[] = "MSG: Null Device ID";
-//    $message[] = "";
-//    $responseData = json_encode($message);
-//    die();
-//} else {
 $sql = "SELECT * FROM devices";
 $result = mysqli_query($con, $sql);
 $json_array = array();

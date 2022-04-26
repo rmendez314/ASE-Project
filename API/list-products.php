@@ -26,7 +26,7 @@ if (!$con) {
                 FROM products 
                 INNER JOIN devices ON products.device_id = devices.auto_id 
                 INNER JOIN manufacturers ON products.manufacturer_id = manufacturers.auto_id 
-                LIMIT 100";
+                LIMIT 1000";
     $result = mysqli_query($con, $sql);
     $json_array = array();
 //    $json_array[] = "Status: OK";

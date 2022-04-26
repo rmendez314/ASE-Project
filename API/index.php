@@ -1,21 +1,17 @@
 <?php
-include '.env.php';
+include './.env.php';
 //include '/components/connect.php';
 
-//include "components/connect.php";
-$uri = $_SERVER['REQUEST_URI'];
-//$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$data = explode('/', $uri);
-# remove first character in data[1]
-$endpoint = substr($data[2], 1);
-//$endpoint = $uri[0];
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+$uri = explode('&', $uri);
+$endpoint = $uri[0];
 //echo $endpoint;
 switch ($endpoint){
     case "list-products":
         include "./list-products.php";
         break;
     case "add-device":
-        echo "Add device<br>";
+        include "./add-device.php";
         break;
     case "update-product":
         echo "Update product<br>";
@@ -24,10 +20,10 @@ switch ($endpoint){
         echo "Update device<br>";
         break;
     case "delete-device":
-        echo "Delete device<br>";
+        include "./delete-device.php";
         break;
     case "upload-file":
-        echo "Upload file<br>";
+        include "./upload-file.php";
         break;
     case "list-devices":
         include "./list-devices.php";
@@ -35,11 +31,14 @@ switch ($endpoint){
     case "list-manufacturers":
         include "./list-manufacturers.php";
         break;
-    case "search-product":
-        echo "Search product<br>";
+    case "search-product-SN":
+        include "./search-product-SN.php";
         break;
     case "view-device-SN":
-        echo "View device SN<br>";
+        include "./view-device-SN.php";
+        break;
+    case "view-product":
+        include ("./view-product.php");
         break;
     default:
         header('Content-Type: application/json');
