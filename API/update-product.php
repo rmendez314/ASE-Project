@@ -65,24 +65,23 @@ if(is_numeric($device) && $device != null || is_numeric($manufacturer) && $manuf
             $final_sql .= "is_active = 1 ";
         }
         $final_sql = $final_sql . " WHERE SN = '$SN'";
-        echo $final_sql;
-//        $result = mysqli_query($con, $sql);
-//        $message = array();
-//
-//        if($result){
-//            header('Content-Type: application/json');
-//            header('HTTP/1.1 200 OK');
-//            $message[] = "Status: Success";
-//            $message[] = "MSG: Product updated successfully";
-//        } else {
-//            header('Content-Type: application/json');
-//            header('HTTP/1.1 500 Internal Server Error');
-//            $message[] = "Status: Failed";
-//            $message[] = "MSG: Product update failed";
-//        }
-//        $message[] = " ";
-//        $responseData = json_encode($message);
-//        echo $responseData;
-//        die();
+        $result = mysqli_query($con, $final_sql);
+        $message = array();
+
+        if($result){
+            header('Content-Type: application/json');
+            header('HTTP/1.1 200 OK');
+            $message[] = "Status: Success";
+            $message[] = "MSG: Product updated successfully";
+        } else {
+            header('Content-Type: application/json');
+            header('HTTP/1.1 500 Internal Server Error');
+            $message[] = "Status: Failed";
+            $message[] = "MSG: Product update failed";
+        }
+        $message[] = " ";
+        $responseData = json_encode($message);
+        echo $responseData;
+        die();
     }
 }
