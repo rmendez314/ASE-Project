@@ -5,7 +5,7 @@ include './.env.php';
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
 $uri = explode('&', $uri);
 $endpoint = $uri[0];
-//echo $endpoint;
+
 switch ($endpoint){
     case "list-products":
         include "./list-products.php";
@@ -14,10 +14,7 @@ switch ($endpoint){
         include "./add-device.php";
         break;
     case "update-product":
-        echo "Update product<br>";
-        break;
-    case "update-device":
-        echo "Update device<br>";
+        include "./update-product.php";
         break;
     case "delete-device":
         include "./delete-device.php";
@@ -48,7 +45,6 @@ switch ($endpoint){
         $message = "";
         echo json_encode($message);
         die();
-        break;
 }
 
 
