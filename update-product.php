@@ -40,6 +40,16 @@ function update_product($current_page, $serial_number){
         </div>
     </div>
     ";
+    echo "<div id=\"outer\" class=\"container\">
+            <div class=\"container\" id=\"form-container\">
+                <form id= \"upload-file\" action=\"files-logic.php\" method=\"post\" enctype=\"multipart/form-data\">
+                    <h2>Upload File for: $serial_number</h2>
+                    <input type='hidden' name='serial_number' id='serial_number' value='$serial_number'>
+                    <input type=\"file\" name=\"upload-file\" id=\"upload-file\"> <br>
+                    <button type=\"submit\" name=\"upload-file\" id=\"upload-file\" class=\"btn btn-primary\">Upload</button>
+                </form>
+            </div>
+          </div>";
     html_bottom();
 }
 

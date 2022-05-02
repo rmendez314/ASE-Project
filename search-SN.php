@@ -44,7 +44,6 @@
                     echo "<td>Inactive</td>";
                 }
             }
-
         } else {
             echo "0 results";
         }

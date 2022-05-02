@@ -16,9 +16,9 @@
     $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DATABASE);
     $devices = get_devices();
     $manufacturers = get_manufacturers();
-
     html_top("eyi617-ASE-Project", "/styles/dark.css");
 ?>
+
 <div id="outer" class="container">
     <div class="container" id="form-container">
         <form id="drop-down" action="drop-down-result.php?page=1" method="post">
