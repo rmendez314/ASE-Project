@@ -42,7 +42,7 @@ switch ($endpoint){
         header("HTTP/1.1 404 Not Found");
         $message[] = "Status: Error";
         $message[] = "Data: Endpoint not found";
-        $message = "";
+        $message = " ";
         echo json_encode($message);
         die();
 }
