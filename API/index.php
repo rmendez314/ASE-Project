@@ -32,7 +32,7 @@ switch ($endpoint){
         include "./search-product-SN.php";
         break;
     case "view-device-SN":
-        include "./view-device-SN.php";
+        include "./view-device.php";
         break;
     case "view-product":
         include ("./view-product.php");
