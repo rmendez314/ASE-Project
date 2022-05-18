@@ -22,7 +22,7 @@ if (!$con) {
 //    $responseData = json_encode($message);
 //    die();
 //} else {
-    $sql = "SELECT products.SN, devices.device_type, manufacturers.manufacturer
+    $sql = "SELECT products.auto_id, products.SN, devices.device_type, manufacturers.manufacturer, products.is_active
                 FROM products 
                 INNER JOIN devices ON products.device_id = devices.auto_id 
                 INNER JOIN manufacturers ON products.manufacturer_id = manufacturers.auto_id 
