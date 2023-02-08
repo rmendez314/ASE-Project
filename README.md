@@ -167,7 +167,7 @@
     * Int
     * Must be a valid device id
   * manufacturer:
-    * Not Require
+    * Not Required
     * Int
     * Must be a valid manufacturer id
   * is_active:
